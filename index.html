@@ -1,0 +1,3000 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Capital Hub - Bank Sulselbar</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #043768;
+            --primary-dark: #032952;
+            --primary-light: #0a5a9e;
+            --accent: #e85d04;
+            --accent-dark: #d45303;
+            --accent-light: #f77f00;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f1f5f9;
+            --surface: #ffffff;
+            --muted: #64748b;
+            
+            --gradient-primary: linear-gradient(135deg, #043768 0%, #0a5a9e 100%);
+            --gradient-accent: linear-gradient(135deg, #e85d04 0%, #f77f00 100%);
+            --gradient-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            
+            --shadow-sm: 0 2px 8px rgba(4, 55, 104, 0.08);
+            --shadow-md: 0 4px 16px rgba(4, 55, 104, 0.12);
+            --shadow-lg: 0 8px 32px rgba(4, 55, 104, 0.16);
+            --shadow-xl: 0 16px 48px rgba(4, 55, 104, 0.2);
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--gradient-bg);
+            min-height: 100vh;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(4, 55, 104, 0.03) 0%, 
+                rgba(232, 93, 4, 0.03) 50%, 
+                rgba(4, 55, 104, 0.03) 100%);
+            background-size: 200% 200%;
+            animation: gradient-shift 15s ease infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Header */
+        .navbar-modern {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(4, 55, 104, 0.1);
+            box-shadow: var(--shadow-md);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .brand-text .main-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .brand-text .sub-title {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Connection Status */
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.online { background: var(--success); }
+        .status-dot.offline { background: var(--danger); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(4, 55, 104, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title i {
+            color: var(--accent);
+        }
+
+        /* ============================================
+           UPCOMING MEETINGS CAROUSEL SLIDER
+           ============================================ */
+        .upcoming-section {
+            margin-bottom: 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border-top: 4px solid var(--accent);
+        }
+
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            padding: 1rem 0;
+        }
+
+        .carousel-track {
+            display: flex;
+            gap: 1.5rem;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0.5rem;
+        }
+
+        /* Auto-zoom mode styles */
+        .carousel-track.zoom-mode {
+            justify-content: center;
+        }
+
+        .carousel-track.zoom-mode .meeting-card {
+            opacity: 0.3;
+            transform: scale(0.8);
+            filter: blur(2px);
+        }
+
+        .carousel-track.zoom-mode .meeting-card.active-zoom {
+            opacity: 1;
+            transform: scale(1.1);
+            filter: blur(0);
+            z-index: 10;
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent);
+        }
+
+        .meeting-card {
+            min-width: 350px;
+            max-width: 350px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 2px solid rgba(4, 55, 104, 0.1);
+            overflow: hidden;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .meeting-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent);
+        }
+
+        /* Carousel Auto-Play Controls */
+        .carousel-controls {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+        }
+
+        .control-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .control-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .control-btn i {
+            font-size: 1rem;
+        }
+
+        /* Progress bar for auto-slide */
+        .slide-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent);
+            transition: width 0.1s linear;
+            z-index: 50;
+        }
+
+        .slide-progress.active {
+            animation: progress 5s linear;
+        }
+
+        @keyframes progress {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+
+        .meeting-card-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .meeting-card-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .meeting-card-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 100px;
+            height: 100px;
+            background: rgba(232, 93, 4, 0.2);
+            border-radius: 50%;
+        }
+
+        .meeting-time {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .meeting-date {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .meeting-card-body {
+            padding: 1.25rem;
+        }
+
+        .meeting-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .meeting-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .meeting-location i {
+            color: var(--accent);
+        }
+
+        .meeting-participants {
+            margin-bottom: 1rem;
+        }
+
+        .participants-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .participant-badge {
+            padding: 0.375rem 0.75rem;
+            background: linear-gradient(135deg, rgba(232, 93, 4, 0.15) 0%, rgba(232, 93, 4, 0.05) 100%);
+            border: 1px solid var(--accent);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            transition: var(--transition);
+        }
+
+        .participant-badge:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .participant-badge i {
+            font-size: 0.625rem;
+            color: var(--accent);
+        }
+
+        .participant-badge:hover i {
+            color: white;
+        }
+
+        .participants-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .participants-count {
+            background: var(--accent);
+            color: white;
+            padding: 0.125rem 0.5rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+        }
+
+        .meeting-footer {
+            display: flex;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(4, 55, 104, 0.1);
+        }
+
+        .btn-meeting {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-view {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .btn-edit {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: var(--accent-dark);
+            transform: scale(1.05);
+        }
+
+        /* Carousel Navigation */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 10;
+            box-shadow: var(--shadow-md);
+        }
+
+        .carousel-nav:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-nav.prev { left: -20px; }
+        .carousel-nav.next { right: -20px; }
+
+        .carousel-nav.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(4, 55, 104, 0.2);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .carousel-dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: var(--accent);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--muted);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+            color: var(--accent);
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        /* ============================================
+           MEETING DETAIL ZOOM MODAL
+           ============================================ */
+        .meeting-detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .meeting-detail-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content-zoom {
+            background: white;
+            border-radius: var(--radius-xl);
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            animation: zoomIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header-zoom {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header-zoom::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 250px;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .modal-header-zoom::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(232, 93, 4, 0.2);
+            border-radius: 50%;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-title-zoom {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-body-zoom {
+            padding: 2rem;
+        }
+
+        .detail-section {
+            margin-bottom: 2rem;
+        }
+
+        .detail-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-label i {
+            color: var(--accent);
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            color: var(--dark);
+            padding: 1rem;
+            background: var(--light);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--accent);
+        }
+
+        .time-range {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .time-box-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .time-box-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .participants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .participant-card {
+            padding: 1rem;
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: var(--radius-md);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .participant-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .participant-card-avatar {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 0.75rem;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .participant-card-name {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            background: var(--light);
+            border-top: 1px solid rgba(4, 55, 104, 0.1);
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .modal-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-btn-success {
+            background: var(--accent);
+            color: white;
+        }
+
+        .modal-btn-success:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .modal-btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ============================================
+           ALL MEETINGS TABLE SECTION
+           ============================================ */
+        .meetings-table-section {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 3rem;
+            border-top: 4px solid var(--primary);
+        }
+
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 2px solid rgba(4, 55, 104, 0.2);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(232, 93, 4, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.25rem;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-add-meeting {
+            padding: 0.875rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .btn-add-meeting:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(4, 55, 104, 0.1);
+        }
+
+        .meetings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .meetings-table thead {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .meetings-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meetings-table tbody tr {
+            border-bottom: 1px solid rgba(4, 55, 104, 0.1);
+            transition: var(--transition);
+        }
+
+        .meetings-table tbody tr:hover {
+            background: rgba(232, 93, 4, 0.05);
+        }
+
+        .meetings-table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn-view {
+            background: var(--primary);
+            color: white;
+        }
+
+        .action-btn-view:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .action-btn-edit {
+            background: var(--accent);
+            color: white;
+        }
+
+        .action-btn-edit:hover {
+            background: var(--accent-dark);
+            transform: scale(1.1);
+        }
+
+        .action-btn-delete {
+            background: var(--danger);
+            color: white;
+        }
+
+        .action-btn-delete:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        /* Status Badge */
+        .status-badge {
+            padding: 0.375rem 0.875rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .status-upcoming {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-today {
+            background: rgba(232, 93, 4, 0.1);
+            color: var(--accent);
+        }
+
+        .status-past {
+            background: rgba(100, 116, 139, 0.1);
+            color: var(--muted);
+        }
+
+        /* Notification Toast */
+        .notification-toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            min-width: 300px;
+            max-width: 400px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            padding: 1.25rem;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            z-index: 3000;
+            animation: slideInRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification-toast.show {
+            display: flex;
+        }
+
+        .toast-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .toast-success { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .toast-error { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+        .toast-warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+        .toast-info { background: rgba(232, 93, 4, 0.15); color: var(--accent); }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .toast-message {
+            font-size: 0.875rem;
+            color: var(--muted);
+        }
+
+        .toast-close {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toast-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        /* Calendar styles */
+        .calendar-section {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 3rem;
+            border-top: 4px solid var(--success);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .calendar-nav button {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calendar-nav button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            padding: 0.75rem;
+            color: var(--primary);
+            font-size: 0.875rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            border: 1px solid rgba(4, 55, 104, 0.1);
+        }
+
+        .calendar-day:hover {
+            background: rgba(232, 93, 4, 0.1);
+            transform: scale(1.05);
+        }
+
+        .calendar-day.today {
+            background: var(--accent);
+            color: white;
+            font-weight: 700;
+        }
+
+        .calendar-day.has-meeting::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .calendar-day.today.has-meeting::after {
+            background: white;
+        }
+
+        .calendar-day.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* Stats Cards */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card:nth-child(2) { border-left-color: var(--accent); }
+        .stat-card:nth-child(3) { border-left-color: var(--success); }
+        .stat-card:nth-child(4) { border-left-color: var(--warning); }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-card:nth-child(1) .stat-icon { background: var(--gradient-primary); }
+        .stat-card:nth-child(2) .stat-icon { background: var(--gradient-accent); }
+        .stat-card:nth-child(3) .stat-icon { background: linear-gradient(135deg, #10b981 0%, #34d399 100%); }
+        .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); }
+
+        .stat-content h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-content p {
+            font-size: 0.875rem;
+            color: var(--muted);
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .meeting-card {
+                min-width: 280px;
+                max-width: 280px;
+            }
+
+            .carousel-nav {
+                width: 40px;
+                height: 40px;
+            }
+
+            .carousel-nav.prev { left: -10px; }
+            .carousel-nav.next { right: -10px; }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .modal-content-zoom {
+                max-width: 100%;
+                margin: 0.5rem;
+                max-height: 95vh;
+            }
+
+            .modal-header-zoom {
+                padding: 1.5rem;
+            }
+
+            .modal-title-zoom {
+                font-size: 1.5rem;
+            }
+
+            .modal-body-zoom {
+                padding: 1.5rem;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .table-controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .meetings-table {
+                font-size: 0.875rem;
+            }
+
+            .meetings-table th,
+            .meetings-table td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .brand-text .main-title {
+                font-size: 1.1rem;
+            }
+
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--muted);
+            font-size: 0.875rem;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar-modern">
+        <div class="container-fluid px-4">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <a href="#" class="brand-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="brand-text">
+                        <span class="main-title">Human Capital Hub</span>
+                        <span class="sub-title">BANK SULSELBAR</span>
+                    </div>
+                </a>
+                <div class="connection-status">
+                    <div class="status-dot offline" id="statusDot"></div>
+                    <span id="statusText">Connecting...</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="statTotal">0</h3>
+                    <p>Total Meeting</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="statUpcoming">0</h3>
+                    <p>Upcoming</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-day"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="statToday">0</h3>
+                    <p>Today</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-history"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="statPast">0</h3>
+                    <p>Completed</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Upcoming Meetings Carousel Section -->
+        <section class="upcoming-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-clock"></i>
+                    Upcoming Meetings
+                </h2>
+                <span class="badge bg-primary" id="upcomingCount">0 meetings</span>
+            </div>
+            
+            <div class="carousel-container" id="upcomingCarousel">
+                <!-- Auto-Play Controls -->
+                <div class="carousel-controls">
+                    <button class="control-btn" id="playPauseBtn" title="Play/Pause Auto-Slide">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="control-btn" id="zoomModeBtn" title="Toggle Zoom Mode">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="slide-progress" id="slideProgress"></div>
+                
+                <button class="carousel-nav prev" id="carouselPrev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="carousel-track" id="carouselTrack">
+                    <!-- Meeting cards will be inserted here dynamically -->
+                </div>
+                
+                <button class="carousel-nav next" id="carouselNext">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="carousel-indicators" id="carouselIndicators">
+                <!-- Indicators will be inserted here dynamically -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-calendar-times"></i>
+                <h3>Tidak Ada Meeting Mendatang</h3>
+                <p>Jadwal kosong! Tambahkan meeting baru untuk memulai.</p>
+            </div>
+        </section>
+
+        <!-- Calendar Section -->
+        <section class="calendar-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-calendar"></i>
+                    Calendar Overview
+                </h2>
+            </div>
+            
+            <div class="calendar-header">
+                <h3 class="mb-0" id="calendarMonth">Loading...</h3>
+                <div class="calendar-nav">
+                    <button onclick="previousMonth()">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button onclick="nextMonth()">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- Calendar will be generated here -->
+            </div>
+        </section>
+
+        <!-- All Meetings Table Section -->
+        <section class="meetings-table-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-list"></i>
+                    All Meetings
+                </h2>
+                <button class="btn-add-meeting" id="addMeetingBtn">
+                    <i class="fas fa-plus"></i>
+                    Tambah Meeting
+                </button>
+            </div>
+
+            <div class="table-controls">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Cari meeting...">
+                </div>
+                
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">Semua</button>
+                    <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+                    <button class="filter-btn" data-filter="today">Hari Ini</button>
+                    <button class="filter-btn" data-filter="past">Selesai</button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="meetings-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Waktu</th>
+                            <th>Meeting</th>
+                            <th>Lokasi</th>
+                            <th>Pembuat</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="meetingsTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 3rem;">
+                                <div class="loading-spinner" style="display: inline-block; border-color: var(--primary); border-top-color: transparent; width: 40px; height: 40px;"></div>
+                                <p style="margin-top: 1rem; color: var(--muted);">Memuat data meeting...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 Human Capital Hub - <strong>Divisi Human Capital</strong> Bank Sulselbar</p>
+        <p>Developed with <i class="fas fa-heart" style="color: var(--danger);"></i> for better meeting management</p>
+    </footer>
+
+    <!-- Meeting Detail Zoom Modal -->
+    <div class="meeting-detail-modal" id="meetingDetailModal">
+        <div class="modal-content-zoom">
+            <div class="modal-header-zoom">
+                <button class="modal-close" onclick="closeMeetingDetail()">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2 class="modal-title-zoom" id="detailTitle">Detail Meeting</h2>
+                <div class="modal-subtitle" id="detailSubtitle">
+                    <i class="fas fa-calendar"></i>
+                    <span>Loading...</span>
+                </div>
+            </div>
+
+            <div class="modal-body-zoom">
+                <div class="detail-section">
+                    <div class="detail-label">
+                        <i class="fas fa-clock"></i>
+                        Jadwal
+                    </div>
+                    <div class="time-range">
+                        <div class="time-box">
+                            <div class="time-box-label">Waktu Mulai</div>
+                            <div class="time-box-value" id="detailStartTime">--:--</div>
+                        </div>
+                        <div class="time-box">
+                            <div class="time-box-label">Waktu Selesai</div>
+                            <div class="time-box-value" id="detailEndTime">--:--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Lokasi
+                    </div>
+                    <div class="detail-value" id="detailLocation">
+                        Loading...
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">
+                        <i class="fas fa-user-tie"></i>
+                        Pembuat Rapat
+                    </div>
+                    <div class="detail-value" id="detailOrganizer">
+                        Loading...
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">
+                        <i class="fas fa-align-left"></i>
+                        Keterangan
+                    </div>
+                    <div class="detail-value" id="detailDescription">
+                        Loading...
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">
+                        <i class="fas fa-users"></i>
+                        Peserta (<span id="participantCount">0</span>)
+                    </div>
+                    <div class="participants-grid" id="participantsGrid">
+                        <!-- Participant cards will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" onclick="editMeetingFromDetail()">
+                    <i class="fas fa-edit"></i>
+                    Edit Meeting
+                </button>
+                <button class="modal-btn modal-btn-success" onclick="exportMeetingToCalendar()">
+                    <i class="fas fa-download"></i>
+                    Export Calendar
+                </button>
+                <button class="modal-btn modal-btn-danger" onclick="deleteMeetingFromDetail()">
+                    <i class="fas fa-trash"></i>
+                    Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="notification-toast" id="notificationToast">
+        <div class="toast-icon toast-success" id="toastIcon">
+            <i class="fas fa-check"></i>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Berhasil</div>
+            <div class="toast-message" id="toastMessage">Operasi berhasil dilakukan</div>
+        </div>
+        <button class="toast-close" onclick="closeToast()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Add/Edit Meeting Form Modal -->
+    <div class="modal fade" id="meetingFormModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header" style="background: var(--gradient-primary); color: white; border: none;">
+                    <h5 class="modal-title" id="formModalTitle">
+                        <i class="fas fa-plus-circle"></i>
+                        Tambah Meeting Baru
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" style="max-height: 70vh; overflow-y: auto; padding: 2rem;">
+                    <form id="meetingForm">
+                        <input type="hidden" id="editingId">
+                        
+                        <!-- Basic Info -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);">
+                                <i class="fas fa-info-circle"></i> Informasi Dasar
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-user"></i> Pembuat Rapat
+                                    </label>
+                                    <select class="form-select" id="pembuatRapat" required>
+                                        <option value="">Pilih Departemen/Divisi</option>
+                                        <optgroup label="── DIVISI HUMAN CAPITAL ──">
+                                            <option value="Divisi Human Capital">Divisi Human Capital</option>
+                                            <option value="Dept. Pengembangan & Pelatihan">Dept. Pengembangan & Pelatihan</option>
+                                            <option value="Dept. Operasional Human Capital">Dept. Operasional Human Capital</option>
+                                            <option value="Dept. Strategi Human Capital">Dept. Strategi Human Capital</option>
+                                        </optgroup>
+                                        <optgroup label="── DIVISI/UNIT LAIN ──">
+                                            <option value="Direksi Bank Sulselbar">Direksi Bank Sulselbar</option>
+                                            <option value="DIVISI SIMO">DIVISI SIMO</option>
+                                            <option value="SKAI">SKAI</option>
+                                            <option value="DCS">DCS</option>
+                                            <option value="DDL">DDL</option>
+                                            <option value="DKA">DKA</option>
+                                            <option value="DTI">DTI</option>
+                                            <option value="DUM">DUM</option>
+                                            <option value="DJS">DJS</option>
+                                            <option value="DTR">DTR</option>
+                                            <option value="DSY">DSY</option>
+                                            <option value="DIB">DIB</option>
+                                            <option value="DKK">DKK</option>
+                                            <option value="DRK">DRK</option>
+                                            <option value="SKK">SKK</option>
+                                            <option value="SKMR">SKMR</option>
+                                            <option value="DPLK">DPLK</option>
+                                            <option value="UPPK">UPPK</option>
+                                        </optgroup>
+                                        <optgroup label="── EKSTERNAL ──">
+                                            <option value="External">Organisasi Eksternal</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-map-marker-alt"></i> Lokasi
+                                    </label>
+                                    <input type="text" class="form-control" id="tempatRapat" placeholder="Masukkan lokasi meeting" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- External Creator -->
+                        <div class="mb-4" id="externalCreatorDiv" style="display: none; background: #fff7ed; padding: 1rem; border-radius: var(--radius-md); border: 2px dashed var(--accent);">
+                            <h6 class="fw-bold mb-3" style="color: var(--accent);">
+                                <i class="fas fa-globe"></i> Detail Organisasi Eksternal
+                            </h6>
+                            <input type="text" class="form-control" id="externalCreator" placeholder="Nama Perusahaan/Organisasi (contoh: PT. ABC Corporation)">
+                        </div>
+
+                        <!-- Meeting Details -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);">
+                                <i class="fas fa-clipboard-list"></i> Detail Meeting
+                            </h6>
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-comment-dots"></i> Keterangan Meeting
+                            </label>
+                            <textarea class="form-control" id="keteranganRapat" rows="3" placeholder="Masukkan keterangan meeting" required></textarea>
+                        </div>
+
+                        <!-- Date & Time -->
+                        <div class="mb-4" style="background: #f8f9fa; padding: 1rem; border-radius: var(--radius-md);">
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);">
+                                <i class="fas fa-calendar-week"></i> Jadwal & Durasi
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Tanggal Mulai</label>
+                                    <input type="date" class="form-control" id="tanggalMulai" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Tanggal Selesai</label>
+                                    <input type="date" class="form-control" id="tanggalSelesai" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Waktu Mulai</label>
+                                    <input type="time" class="form-control" id="jamMulai" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Waktu Selesai</label>
+                                    <input type="time" class="form-control" id="jamSelesai" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Audience -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);">
+                                <i class="fas fa-users"></i> Peserta Meeting
+                            </h6>
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-sm btn-primary me-2" id="selectAllAudBtn">
+                                    <i class="fas fa-check-double"></i> Pilih Semua
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="clearAllAudBtn">
+                                    <i class="fas fa-times"></i> Hapus Semua
+                                </button>
+                            </div>
+                            <div class="row" id="audienceCheckboxes" style="max-height: 300px; overflow-y: auto; padding: 1rem; background: #f8f9fa; border-radius: var(--radius-md);">
+                                <!-- Human Capital Units -->
+                                <div class="col-12 mb-2">
+                                    <strong class="text-primary"><i class="fas fa-users"></i> Divisi Human Capital</strong>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Divisi Human Capital" id="aud_dhc">
+                                        <label class="form-check-label" for="aud_dhc">Divisi Human Capital</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Dept. Pengembangan & Pelatihan" id="aud_pp">
+                                        <label class="form-check-label" for="aud_pp">Dept. Pengembangan & Pelatihan</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Dept. Operasional Human Capital" id="aud_ohc">
+                                        <label class="form-check-label" for="aud_ohc">Dept. Operasional Human Capital</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Dept. Strategi Human Capital" id="aud_shc">
+                                        <label class="form-check-label" for="aud_shc">Dept. Strategi Human Capital</label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Other Divisions -->
+                                <div class="col-12 mb-2 mt-3">
+                                    <strong class="text-muted"><i class="fas fa-building"></i> Divisi/Unit Lain</strong>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Direksi Bank Sulselbar" id="aud_direksi">
+                                        <label class="form-check-label" for="aud_direksi">Direksi Bank Sulselbar</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DIVISI SIMO" id="aud_simo">
+                                        <label class="form-check-label" for="aud_simo">DIVISI SIMO</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="SKAI" id="aud_skai">
+                                        <label class="form-check-label" for="aud_skai">SKAI</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DCS" id="aud_dcs">
+                                        <label class="form-check-label" for="aud_dcs">DCS</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DDL" id="aud_ddl">
+                                        <label class="form-check-label" for="aud_ddl">DDL</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DKA" id="aud_dka">
+                                        <label class="form-check-label" for="aud_dka">DKA</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DTI" id="aud_dti">
+                                        <label class="form-check-label" for="aud_dti">DTI</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DUM" id="aud_dum">
+                                        <label class="form-check-label" for="aud_dum">DUM</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DJS" id="aud_djs">
+                                        <label class="form-check-label" for="aud_djs">DJS</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DTR" id="aud_dtr">
+                                        <label class="form-check-label" for="aud_dtr">DTR</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DSY" id="aud_dsy">
+                                        <label class="form-check-label" for="aud_dsy">DSY</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DIB" id="aud_dib">
+                                        <label class="form-check-label" for="aud_dib">DIB</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DKK" id="aud_dkk">
+                                        <label class="form-check-label" for="aud_dkk">DKK</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DRK" id="aud_drk">
+                                        <label class="form-check-label" for="aud_drk">DRK</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="SKK" id="aud_skk">
+                                        <label class="form-check-label" for="aud_skk">SKK</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="SKMR" id="aud_skmr">
+                                        <label class="form-check-label" for="aud_skmr">SKMR</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="DPLK" id="aud_dplk">
+                                        <label class="form-check-label" for="aud_dplk">DPLK</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="UPPK" id="aud_uppk">
+                                        <label class="form-check-label" for="aud_uppk">UPPK</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Other" id="aud_other">
+                                        <label class="form-check-label" for="aud_other">Lainnya</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3" id="customAudienceDiv" style="display: none;">
+                                <label class="form-label fw-bold">Peserta Lainnya</label>
+                                <input type="text" class="form-control" id="customAudience" placeholder="Masukkan peserta lainnya">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                    <button type="button" class="btn" id="saveMeetingBtn" style="background: var(--accent); color: white;">
+                        <i class="fas fa-save"></i> Simpan Meeting
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK v9 - Compat Version -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase configuration - Human Capital Hub
+        const firebaseConfig = {
+            apiKey: "AIzaSyDSgvXhulqNEVQqEYkjbAvrid8BnseQQTU",
+            authDomain: "rapathc.firebaseapp.com",
+            projectId: "rapathc",
+            storageBucket: "rapathc.firebasestorage.app",
+            messagingSenderId: "770628397536",
+            appId: "1:770628397536:web:aed756c163685ea050e385",
+            measurementId: "G-38GDYHXWZW"
+        };
+
+        let app, db;
+        let allMeetings = [];
+        let currentMeetingId = null;
+
+        // Initialize Firebase
+        console.log('Initializing Firebase for Human Capital Hub...');
+        try {
+            app = firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            console.log('Firebase initialized successfully!');
+            updateConnectionStatus(true);
+            listenToMeetings();
+        } catch (error) {
+            console.error('Firebase initialization error:', error);
+            updateConnectionStatus(false);
+            showToast('Error', 'Gagal koneksi ke Firebase: ' + error.message, 'error');
+        }
+
+        // Connection Status
+        function updateConnectionStatus(connected) {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            
+            if (connected) {
+                statusDot.classList.remove('offline');
+                statusDot.classList.add('online');
+                statusText.textContent = 'Online';
+            } else {
+                statusDot.classList.remove('online');
+                statusDot.classList.add('offline');
+                statusText.textContent = 'Offline';
+            }
+        }
+
+        // Listen to Firebase changes
+        function listenToMeetings() {
+            console.log('Setting up Firestore listener...');
+            
+            db.collection('meetings')
+                .orderBy('tanggalMulai', 'asc')
+                .onSnapshot((snapshot) => {
+                    console.log('Received snapshot with', snapshot.size, 'documents');
+                    allMeetings = [];
+                    
+                    snapshot.forEach((doc) => {
+                        allMeetings.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+                    });
+
+                    console.log('Loaded meetings:', allMeetings);
+                    updateStats();
+                    renderUpcomingMeetings();
+                    renderMeetingsTable();
+                    renderCalendar();
+                    
+                    if (allMeetings.length > 0) {
+                        showToast('Berhasil', `Memuat ${allMeetings.length} meeting`, 'success');
+                    }
+                }, (error) => {
+                    console.error('Error listening to meetings:', error);
+                    showToast('Error', 'Gagal memuat data: ' + error.message, 'error');
+                    updateConnectionStatus(false);
+                });
+        }
+
+        // Update Statistics
+        function updateStats() {
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            
+            let upcoming = 0, todayCount = 0, past = 0;
+            
+            allMeetings.forEach(meeting => {
+                const meetingDate = meeting.tanggalMulai;
+                if (meetingDate === today) {
+                    todayCount++;
+                } else if (meetingDate > today) {
+                    upcoming++;
+                } else {
+                    past++;
+                }
+            });
+
+            document.getElementById('statTotal').textContent = allMeetings.length;
+            document.getElementById('statUpcoming').textContent = upcoming;
+            document.getElementById('statToday').textContent = todayCount;
+            document.getElementById('statPast').textContent = past;
+        }
+
+        // ============================================
+        // CAROUSEL FUNCTIONS
+        // ============================================
+        let currentSlide = 0;
+        let currentZoomIndex = 0;
+        const cardsPerView = 3;
+        let isAutoPlaying = true;
+        let isZoomMode = true;
+        let autoPlayInterval = null;
+        let progressInterval = null;
+        const autoPlayDelay = 5000;
+
+        function renderUpcomingMeetings() {
+            const now = new Date();
+            const upcoming = allMeetings.filter(meeting => {
+                const meetingDate = new Date(meeting.tanggalMulai + ' ' + meeting.jamMulai);
+                return meetingDate >= now;
+            });
+
+            const carouselTrack = document.getElementById('carouselTrack');
+            const emptyState = document.getElementById('emptyState');
+            const upcomingCount = document.getElementById('upcomingCount');
+
+            upcomingCount.textContent = `${upcoming.length} meeting${upcoming.length !== 1 ? 's' : ''}`;
+
+            if (upcoming.length === 0) {
+                carouselTrack.innerHTML = '';
+                emptyState.style.display = 'block';
+                document.getElementById('carouselIndicators').innerHTML = '';
+                document.getElementById('carouselPrev').style.display = 'none';
+                document.getElementById('carouselNext').style.display = 'none';
+                document.querySelector('.carousel-controls').style.display = 'none';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            document.getElementById('carouselPrev').style.display = 'flex';
+            document.getElementById('carouselNext').style.display = 'flex';
+            document.querySelector('.carousel-controls').style.display = 'flex';
+
+            carouselTrack.innerHTML = upcoming.map((meeting, index) => createMeetingCard(meeting, index)).join('');
+            updateCarouselIndicators(upcoming.length);
+            currentSlide = 0;
+            currentZoomIndex = 0;
+            
+            document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
+            document.getElementById('playPauseBtn').classList.add('active');
+            document.getElementById('zoomModeBtn').innerHTML = '<i class="fas fa-compress"></i>';
+            document.getElementById('zoomModeBtn').classList.add('active');
+            
+            updateCarousel();
+            
+            setTimeout(() => {
+                startAutoPlay();
+            }, 500);
+        }
+
+        function createMeetingCard(meeting, index) {
+            const meetingDate = new Date(meeting.tanggalMulai);
+            const formattedDate = meetingDate.toLocaleDateString('id-ID', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+
+            const participants = Array.isArray(meeting.audience) ? meeting.audience : [meeting.audience];
+            
+            const participantBadges = participants.slice(0, 3).map(p => {
+                return `<div class="participant-badge">
+                    <i class="fas fa-user"></i>
+                    ${p}
+                </div>`;
+            }).join('');
+
+            const moreParticipants = participants.length > 3 ? 
+                `<div class="participant-badge">+${participants.length - 3} lainnya</div>` : '';
+
+            return `
+                <div class="meeting-card" data-index="${index}" onclick="viewMeetingDetail('${meeting.id}')">
+                    <div class="meeting-card-header">
+                        <div class="meeting-time">${meeting.jamMulai}</div>
+                        <div class="meeting-date">
+                            <i class="fas fa-calendar"></i>
+                            ${formattedDate}
+                        </div>
+                    </div>
+                    <div class="meeting-card-body">
+                        <h3 class="meeting-title">${meeting.keterangan}</h3>
+                        <div class="meeting-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            ${meeting.tempat || 'Lokasi belum ditentukan'}
+                        </div>
+                        <div class="meeting-participants">
+                            <div class="participants-label">
+                                <i class="fas fa-users"></i>
+                                Peserta
+                                <span class="participants-count">${participants.length}</span>
+                            </div>
+                            <div class="participants-list">
+                                ${participantBadges}
+                                ${moreParticipants}
+                            </div>
+                        </div>
+                        <div class="meeting-footer">
+                            <button class="btn-meeting btn-view" onclick="event.stopPropagation(); viewMeetingDetail('${meeting.id}')">
+                                <i class="fas fa-eye"></i>
+                                Lihat
+                            </button>
+                            <button class="btn-meeting btn-edit" onclick="event.stopPropagation(); editMeeting('${meeting.id}')">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateCarouselIndicators(totalMeetings) {
+            const indicators = document.getElementById('carouselIndicators');
+            const totalSlides = isZoomMode ? totalMeetings : Math.ceil(totalMeetings / cardsPerView);
+            
+            if (totalSlides <= 1 && !isZoomMode) {
+                indicators.innerHTML = '';
+                return;
+            }
+
+            indicators.innerHTML = Array.from({length: totalSlides}, (_, i) => 
+                `<div class="carousel-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`
+            ).join('');
+        }
+
+        function updateCarousel() {
+            const track = document.getElementById('carouselTrack');
+            const cards = track.querySelectorAll('.meeting-card');
+            
+            if (isZoomMode) {
+                track.classList.add('zoom-mode');
+                cards.forEach((card, index) => {
+                    card.classList.toggle('active-zoom', index === currentZoomIndex);
+                });
+                
+                const cardWidth = 350 + 24;
+                const containerWidth = track.parentElement.offsetWidth;
+                const offset = (containerWidth / 2) - (cardWidth / 2) - (currentZoomIndex * cardWidth);
+                track.style.transform = `translateX(${offset}px)`;
+            } else {
+                track.classList.remove('zoom-mode');
+                cards.forEach(card => {
+                    card.classList.remove('active-zoom');
+                });
+                
+                const cardWidth = 350 + 24;
+                track.style.transform = `translateX(-${currentSlide * cardWidth * cardsPerView}px)`;
+            }
+
+            updateIndicators();
+            updateNavigationButtons();
+        }
+
+        function updateIndicators() {
+            const activeIndex = isZoomMode ? currentZoomIndex : currentSlide;
+            document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === activeIndex);
+            });
+        }
+
+        function updateNavigationButtons() {
+            const now = new Date();
+            const upcoming = allMeetings.filter(meeting => {
+                const meetingDate = new Date(meeting.tanggalMulai + ' ' + meeting.jamMulai);
+                return meetingDate >= now;
+            });
+
+            const prevBtn = document.getElementById('carouselPrev');
+            const nextBtn = document.getElementById('carouselNext');
+
+            if (isZoomMode) {
+                prevBtn.classList.toggle('disabled', currentZoomIndex === 0);
+                nextBtn.classList.toggle('disabled', currentZoomIndex >= upcoming.length - 1);
+            } else {
+                const totalSlides = Math.ceil(upcoming.length / cardsPerView);
+                prevBtn.classList.toggle('disabled', currentSlide === 0);
+                nextBtn.classList.toggle('disabled', currentSlide >= totalSlides - 1);
+            }
+        }
+
+        function startAutoPlay() {
+            if (autoPlayInterval) return;
+            
+            isAutoPlaying = true;
+            document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
+            document.getElementById('playPauseBtn').classList.add('active');
+            
+            startProgressBar();
+            
+            autoPlayInterval = setInterval(() => {
+                nextSlide();
+            }, autoPlayDelay);
+        }
+
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+            }
+            
+            if (progressInterval) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+            }
+            
+            isAutoPlaying = false;
+            document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-play"></i>';
+            document.getElementById('playPauseBtn').classList.remove('active');
+            document.getElementById('slideProgress').style.width = '0%';
+        }
+
+        function startProgressBar() {
+            const progressBar = document.getElementById('slideProgress');
+            let width = 0;
+            const increment = 100 / (autoPlayDelay / 100);
+            
+            if (progressInterval) {
+                clearInterval(progressInterval);
+            }
+            
+            progressBar.style.width = '0%';
+            
+            progressInterval = setInterval(() => {
+                width += increment;
+                if (width >= 100) {
+                    width = 0;
+                }
+                progressBar.style.width = width + '%';
+            }, 100);
+        }
+
+        function nextSlide() {
+            const now = new Date();
+            const upcoming = allMeetings.filter(meeting => {
+                const meetingDate = new Date(meeting.tanggalMulai + ' ' + meeting.jamMulai);
+                return meetingDate >= now;
+            });
+
+            if (isZoomMode) {
+                currentZoomIndex++;
+                if (currentZoomIndex >= upcoming.length) {
+                    currentZoomIndex = 0;
+                }
+            } else {
+                const totalSlides = Math.ceil(upcoming.length / cardsPerView);
+                currentSlide++;
+                if (currentSlide >= totalSlides) {
+                    currentSlide = 0;
+                }
+            }
+            
+            updateCarousel();
+            
+            if (isAutoPlaying) {
+                startProgressBar();
+            }
+        }
+
+        function prevSlide() {
+            const now = new Date();
+            const upcoming = allMeetings.filter(meeting => {
+                const meetingDate = new Date(meeting.tanggalMulai + ' ' + meeting.jamMulai);
+                return meetingDate >= now;
+            });
+
+            if (isZoomMode) {
+                currentZoomIndex--;
+                if (currentZoomIndex < 0) {
+                    currentZoomIndex = upcoming.length - 1;
+                }
+            } else {
+                const totalSlides = Math.ceil(upcoming.length / cardsPerView);
+                currentSlide--;
+                if (currentSlide < 0) {
+                    currentSlide = totalSlides - 1;
+                }
+            }
+            
+            updateCarousel();
+            
+            if (isAutoPlaying) {
+                startProgressBar();
+            }
+        }
+
+        function toggleZoomMode() {
+            isZoomMode = !isZoomMode;
+            
+            const zoomBtn = document.getElementById('zoomModeBtn');
+            if (isZoomMode) {
+                zoomBtn.classList.add('active');
+                zoomBtn.innerHTML = '<i class="fas fa-compress"></i>';
+                currentZoomIndex = 0;
+            } else {
+                zoomBtn.classList.remove('active');
+                zoomBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                currentSlide = 0;
+            }
+            
+            const now = new Date();
+            const upcoming = allMeetings.filter(meeting => {
+                const meetingDate = new Date(meeting.tanggalMulai + ' ' + meeting.jamMulai);
+                return meetingDate >= now;
+            });
+            
+            updateCarouselIndicators(upcoming.length);
+            updateCarousel();
+        }
+
+        // Event Listeners
+        document.getElementById('carouselPrev').addEventListener('click', () => {
+            prevSlide();
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                startAutoPlay();
+            }
+        });
+
+        document.getElementById('carouselNext').addEventListener('click', () => {
+            nextSlide();
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                startAutoPlay();
+            }
+        });
+
+        document.getElementById('playPauseBtn').addEventListener('click', () => {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        });
+
+        document.getElementById('zoomModeBtn').addEventListener('click', () => {
+            toggleZoomMode();
+        });
+
+        window.goToSlide = function(index) {
+            if (isZoomMode) {
+                currentZoomIndex = index;
+            } else {
+                currentSlide = index;
+            }
+            updateCarousel();
+            
+            if (isAutoPlaying) {
+                stopAutoPlay();
+                startAutoPlay();
+            }
+        };
+
+        // Touch/Swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.getElementById('carouselTrack').addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.getElementById('carouselTrack').addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                document.getElementById('carouselNext').click();
+            }
+            if (touchEndX > touchStartX + 50) {
+                document.getElementById('carouselPrev').click();
+            }
+        }
+
+        // ============================================
+        // MEETING DETAIL ZOOM MODAL
+        // ============================================
+        window.viewMeetingDetail = function(meetingId) {
+            const meeting = allMeetings.find(m => m.id === meetingId);
+            if (!meeting) return;
+
+            currentMeetingId = meetingId;
+
+            document.getElementById('detailTitle').textContent = meeting.keterangan;
+            
+            const meetingDate = new Date(meeting.tanggalMulai);
+            const formattedDate = meetingDate.toLocaleDateString('id-ID', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            document.getElementById('detailSubtitle').innerHTML = `
+                <i class="fas fa-calendar"></i>
+                <span>${formattedDate}</span>
+            `;
+
+            document.getElementById('detailStartTime').textContent = meeting.jamMulai;
+            document.getElementById('detailEndTime').textContent = meeting.jamSelesai;
+            document.getElementById('detailLocation').textContent = meeting.tempat || 'Lokasi belum ditentukan';
+            
+            const organizer = meeting.isExternal ? meeting.externalCreator : meeting.pembuat;
+            document.getElementById('detailOrganizer').textContent = organizer;
+            
+            document.getElementById('detailDescription').textContent = meeting.keterangan;
+
+            const participants = Array.isArray(meeting.audience) ? meeting.audience : [meeting.audience];
+            document.getElementById('participantCount').textContent = participants.length;
+            
+            const participantsGrid = document.getElementById('participantsGrid');
+            participantsGrid.innerHTML = participants.map(p => {
+                const initials = p.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
+                return `
+                    <div class="participant-card">
+                        <div class="participant-card-avatar">${initials}</div>
+                        <div class="participant-card-name">${p}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('meetingDetailModal').classList.add('show');
+        };
+
+        window.closeMeetingDetail = function() {
+            document.getElementById('meetingDetailModal').classList.remove('show');
+            currentMeetingId = null;
+        };
+
+        window.editMeetingFromDetail = function() {
+            if (currentMeetingId) {
+                closeMeetingDetail();
+                editMeeting(currentMeetingId);
+            }
+        };
+
+        window.deleteMeetingFromDetail = function() {
+            if (!currentMeetingId) return;
+            
+            if (confirm('Apakah Anda yakin ingin menghapus meeting ini?')) {
+                db.collection('meetings').doc(currentMeetingId).delete()
+                    .then(() => {
+                        closeMeetingDetail();
+                        showToast('Berhasil', 'Meeting berhasil dihapus', 'success');
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting meeting:', error);
+                        showToast('Error', 'Gagal menghapus meeting', 'error');
+                    });
+            }
+        };
+
+        window.exportMeetingToCalendar = function() {
+            if (!currentMeetingId) return;
+            
+            const meeting = allMeetings.find(m => m.id === currentMeetingId);
+            if (!meeting) return;
+
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Human Capital Hub//Bank Sulselbar//ID
+BEGIN:VEVENT
+DTSTART:${meeting.tanggalMulai.replace(/-/g, '')}T${meeting.jamMulai.replace(/:/g, '')}00
+DTEND:${meeting.tanggalSelesai.replace(/-/g, '')}T${meeting.jamSelesai.replace(/:/g, '')}00
+SUMMARY:${meeting.keterangan}
+LOCATION:${meeting.tempat || ''}
+DESCRIPTION:${meeting.keterangan}\\nPembuat: ${meeting.pembuat}
+END:VEVENT
+END:VCALENDAR`;
+
+            const blob = new Blob([icsContent], { type: 'text/calendar' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `meeting-hc-${currentMeetingId}.ics`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            showToast('Berhasil', 'File calendar berhasil diunduh', 'success');
+        };
+
+        document.getElementById('meetingDetailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeMeetingDetail();
+            }
+        });
+
+        // ============================================
+        // MEETINGS TABLE
+        // ============================================
+        function renderMeetingsTable() {
+            const tbody = document.getElementById('meetingsTableBody');
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+
+            if (allMeetings.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 3rem; color: var(--muted);">
+                            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                            <br>Belum ada meeting
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = allMeetings.map(meeting => {
+                const meetingDate = meeting.tanggalMulai;
+                const isToday = meetingDate === today;
+                const isPast = meetingDate < today;
+                
+                let statusClass = 'status-upcoming';
+                let statusText = 'Upcoming';
+                
+                if (isToday) {
+                    statusClass = 'status-today';
+                    statusText = 'Hari Ini';
+                } else if (isPast) {
+                    statusClass = 'status-past';
+                    statusText = 'Selesai';
+                }
+
+                const dateObj = new Date(meetingDate);
+                const formattedDate = dateObj.toLocaleDateString('id-ID', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                });
+
+                const organizer = meeting.isExternal ? meeting.externalCreator : meeting.pembuat;
+
+                return `
+                    <tr>
+                        <td><strong>${formattedDate}</strong></td>
+                        <td>${meeting.jamMulai} - ${meeting.jamSelesai}</td>
+                        <td><strong>${meeting.keterangan}</strong></td>
+                        <td>${meeting.tempat || '-'}</td>
+                        <td>${organizer}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="action-btn action-btn-view" onclick="viewMeetingDetail('${meeting.id}')" title="Lihat Detail">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn action-btn-edit" onclick="editMeeting('${meeting.id}')" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn action-btn-delete" onclick="deleteMeetingFromTable('${meeting.id}')" title="Hapus">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        window.deleteMeetingFromTable = function(meetingId) {
+            if (confirm('Apakah Anda yakin ingin menghapus meeting ini?')) {
+                db.collection('meetings').doc(meetingId).delete()
+                    .then(() => {
+                        showToast('Berhasil', 'Meeting berhasil dihapus', 'success');
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting meeting:', error);
+                        showToast('Error', 'Gagal menghapus meeting', 'error');
+                    });
+            }
+        };
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#meetingsTableBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                filterMeetings(filter);
+            });
+        });
+
+        function filterMeetings(filter) {
+            const rows = document.querySelectorAll('#meetingsTableBody tr');
+            
+            rows.forEach(row => {
+                const statusBadge = row.querySelector('.status-badge');
+                if (!statusBadge) return;
+                
+                const status = statusBadge.textContent.toLowerCase();
+                
+                if (filter === 'all') {
+                    row.style.display = '';
+                } else if (filter === 'upcoming' && status === 'upcoming') {
+                    row.style.display = '';
+                } else if (filter === 'today' && status === 'hari ini') {
+                    row.style.display = '';
+                } else if (filter === 'past' && status === 'selesai') {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // ============================================
+        // CALENDAR
+        // ============================================
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        function renderCalendar() {
+            const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            document.getElementById('calendarMonth').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+            const grid = document.getElementById('calendarGrid');
+            const dayHeaders = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+            
+            let html = dayHeaders.map(day => `<div class="calendar-day-header">${day}</div>`).join('');
+
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+                html += '<div class="calendar-day disabled"></div>';
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(currentYear, currentMonth, day);
+                const dateString = date.toISOString().split('T')[0];
+                const today = new Date().toISOString().split('T')[0];
+                
+                const hasMeeting = allMeetings.some(m => m.tanggalMulai === dateString);
+                
+                const classes = ['calendar-day'];
+                if (dateString === today) classes.push('today');
+                if (hasMeeting) classes.push('has-meeting');
+
+                html += `<div class="${classes.join(' ')}" onclick="filterByDate('${dateString}')">${day}</div>`;
+            }
+
+            grid.innerHTML = html;
+        }
+
+        window.filterByDate = function(dateString) {
+            const searchInput = document.getElementById('searchInput');
+            const date = new Date(dateString);
+            const formattedDate = date.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+            searchInput.value = formattedDate;
+            searchInput.dispatchEvent(new Event('input'));
+        };
+
+        window.previousMonth = function() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        };
+
+        window.nextMonth = function() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        };
+
+        // ============================================
+        // NOTIFICATION TOAST
+        // ============================================
+        window.showToast = function(title, message, type = 'success') {
+            const toast = document.getElementById('notificationToast');
+            const icon = document.getElementById('toastIcon');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMessage = document.getElementById('toastMessage');
+
+            icon.className = `toast-icon toast-${type}`;
+            
+            const icons = {
+                success: 'fa-check',
+                error: 'fa-times',
+                warning: 'fa-exclamation',
+                info: 'fa-info'
+            };
+            
+            icon.innerHTML = `<i class="fas ${icons[type] || icons.success}"></i>`;
+            
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                closeToast();
+            }, 5000);
+        };
+
+        window.closeToast = function() {
+            document.getElementById('notificationToast').classList.remove('show');
+        };
+
+        // ============================================
+        // ADD/EDIT MEETING FORM FUNCTIONS
+        // ============================================
+        let meetingFormModal;
+        let isEditMode = false;
+
+        // Initialize form modal
+        document.addEventListener('DOMContentLoaded', function() {
+            meetingFormModal = new bootstrap.Modal(document.getElementById('meetingFormModal'));
+            
+            // External creator toggle
+            document.getElementById('pembuatRapat').addEventListener('change', function() {
+                const externalDiv = document.getElementById('externalCreatorDiv');
+                if (this.value === 'External') {
+                    externalDiv.style.display = 'block';
+                    document.getElementById('externalCreator').required = true;
+                } else {
+                    externalDiv.style.display = 'none';
+                    document.getElementById('externalCreator').required = false;
+                }
+            });
+
+            // Custom audience toggle
+            document.getElementById('aud_other').addEventListener('change', function() {
+                const customDiv = document.getElementById('customAudienceDiv');
+                customDiv.style.display = this.checked ? 'block' : 'none';
+            });
+
+            // Select/Clear all buttons
+            document.getElementById('selectAllAudBtn').addEventListener('click', function() {
+                document.querySelectorAll('#audienceCheckboxes input[type="checkbox"]').forEach(cb => {
+                    cb.checked = true;
+                });
+                document.getElementById('customAudienceDiv').style.display = 'block';
+            });
+
+            document.getElementById('clearAllAudBtn').addEventListener('click', function() {
+                document.querySelectorAll('#audienceCheckboxes input[type="checkbox"]').forEach(cb => {
+                    cb.checked = false;
+                });
+                document.getElementById('customAudienceDiv').style.display = 'none';
+            });
+
+            // Add meeting button
+            document.getElementById('addMeetingBtn').addEventListener('click', openAddMeetingForm);
+
+            // Save button
+            document.getElementById('saveMeetingBtn').addEventListener('click', saveMeeting);
+        });
+
+        // Open form for new meeting
+        function openAddMeetingForm() {
+            isEditMode = false;
+            document.getElementById('formModalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Tambah Meeting Baru';
+            document.getElementById('meetingForm').reset();
+            document.getElementById('editingId').value = '';
+            document.getElementById('externalCreatorDiv').style.display = 'none';
+            document.getElementById('customAudienceDiv').style.display = 'none';
+            
+            // Clear all checkboxes
+            document.querySelectorAll('#audienceCheckboxes input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+            
+            meetingFormModal.show();
+        }
+
+        // Edit meeting
+        window.editMeeting = function(meetingId) {
+            const meeting = allMeetings.find(m => m.id === meetingId);
+            if (!meeting) return;
+            
+            isEditMode = true;
+            document.getElementById('formModalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Meeting';
+            document.getElementById('editingId').value = meetingId;
+            
+            // Fill form
+            document.getElementById('pembuatRapat').value = meeting.isExternal ? 'External' : meeting.pembuat;
+            document.getElementById('tempatRapat').value = meeting.tempat || '';
+            document.getElementById('keteranganRapat').value = meeting.keterangan;
+            document.getElementById('tanggalMulai').value = meeting.tanggalMulai;
+            document.getElementById('tanggalSelesai').value = meeting.tanggalSelesai;
+            document.getElementById('jamMulai').value = meeting.jamMulai;
+            document.getElementById('jamSelesai').value = meeting.jamSelesai;
+            
+            if (meeting.isExternal) {
+                document.getElementById('externalCreatorDiv').style.display = 'block';
+                document.getElementById('externalCreator').value = meeting.externalCreator || '';
+            }
+            
+            // Check audiences
+            const audiences = Array.isArray(meeting.audience) ? meeting.audience : [meeting.audience];
+            document.querySelectorAll('#audienceCheckboxes input[type="checkbox"]').forEach(cb => {
+                cb.checked = audiences.includes(cb.value);
+            });
+            
+            meetingFormModal.show();
+        };
+
+        // Save meeting
+        async function saveMeeting() {
+            // Get selected audiences
+            const selectedAudiences = [];
+            document.querySelectorAll('#audienceCheckboxes input[type="checkbox"]:checked').forEach(cb => {
+                if (cb.value === 'Other') {
+                    const custom = document.getElementById('customAudience').value.trim();
+                    if (custom) selectedAudiences.push(custom);
+                } else {
+                    selectedAudiences.push(cb.value);
+                }
+            });
+
+            if (selectedAudiences.length === 0) {
+                showToast('Peringatan', 'Pilih minimal satu peserta!', 'warning');
+                return;
+            }
+
+            const pembuatValue = document.getElementById('pembuatRapat').value;
+            if (!pembuatValue) {
+                showToast('Peringatan', 'Pilih pembuat rapat!', 'warning');
+                return;
+            }
+
+            const isExternal = pembuatValue === 'External';
+
+            if (isExternal && !document.getElementById('externalCreator').value.trim()) {
+                showToast('Peringatan', 'Isi nama organisasi eksternal!', 'warning');
+                return;
+            }
+
+            const meetingData = {
+                pembuat: isExternal ? 'External' : pembuatValue,
+                isExternal: isExternal,
+                externalCreator: isExternal ? document.getElementById('externalCreator').value.trim() : null,
+                tempat: document.getElementById('tempatRapat').value.trim(),
+                audience: selectedAudiences,
+                keterangan: document.getElementById('keteranganRapat').value.trim(),
+                tanggalMulai: document.getElementById('tanggalMulai').value,
+                tanggalSelesai: document.getElementById('tanggalSelesai').value,
+                jamMulai: document.getElementById('jamMulai').value,
+                jamSelesai: document.getElementById('jamSelesai').value,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                document.getElementById('saveMeetingBtn').disabled = true;
+                document.getElementById('saveMeetingBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+
+                if (isEditMode) {
+                    const editingId = document.getElementById('editingId').value;
+                    await db.collection('meetings').doc(editingId).update(meetingData);
+                    showToast('Berhasil', 'Meeting berhasil diupdate!', 'success');
+                } else {
+                    meetingData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection('meetings').add(meetingData);
+                    showToast('Berhasil', 'Meeting berhasil ditambahkan!', 'success');
+                }
+                
+                meetingFormModal.hide();
+                document.getElementById('meetingForm').reset();
+            } catch (error) {
+                console.error('Error saving meeting:', error);
+                showToast('Error', 'Gagal menyimpan meeting: ' + error.message, 'error');
+            } finally {
+                document.getElementById('saveMeetingBtn').disabled = false;
+                document.getElementById('saveMeetingBtn').innerHTML = '<i class="fas fa-save"></i> Simpan Meeting';
+            }
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
