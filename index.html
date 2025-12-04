@@ -2010,16 +2010,29 @@
 
         // Initialize Firebase
         console.log('Initializing Firebase for Human Capital Hub...');
+        console.log('Firebase config:', firebaseConfig);
+        
         try {
+            // Check if Firebase is available
+            if (typeof firebase === 'undefined') {
+                throw new Error('Firebase SDK not loaded');
+            }
+            
             app = firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
-            console.log('Firebase initialized successfully!');
+            
+            // Test connection
+            console.log('Firebase app initialized:', app.name);
+            console.log('Firestore instance created');
+            
             updateConnectionStatus(true);
             listenToMeetings();
+            
         } catch (error) {
             console.error('Firebase initialization error:', error);
             updateConnectionStatus(false);
             showToast('Error', 'Gagal koneksi ke Firebase: ' + error.message, 'error');
+            alert('Firebase Error: ' + error.message);
         }
 
         // Connection Status
@@ -2042,8 +2055,8 @@
         function listenToMeetings() {
             console.log('Setting up Firestore listener...');
             
+            // Simplified query without orderBy to avoid index requirement
             db.collection('meetings')
-                .orderBy('tanggalMulai', 'asc')
                 .onSnapshot((snapshot) => {
                     console.log('Received snapshot with', snapshot.size, 'documents');
                     allMeetings = [];
@@ -2053,6 +2066,13 @@
                             id: doc.id,
                             ...doc.data()
                         });
+                    });
+
+                    // Sort locally by date
+                    allMeetings.sort((a, b) => {
+                        const dateA = new Date(a.tanggalMulai + ' ' + a.jamMulai);
+                        const dateB = new Date(b.tanggalMulai + ' ' + b.jamMulai);
+                        return dateA - dateB;
                     });
 
                     console.log('Loaded meetings:', allMeetings);
@@ -2889,6 +2909,15 @@ END:VCALENDAR`;
                 cb.checked = false;
             });
             
+            // Set default date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggalMulai').value = today;
+            document.getElementById('tanggalSelesai').value = today;
+            
+            // Set default time 13:00 - 17:00
+            document.getElementById('jamMulai').value = '13:00';
+            document.getElementById('jamSelesai').value = '17:00';
+            
             meetingFormModal.show();
         }
 
@@ -2926,6 +2955,42 @@ END:VCALENDAR`;
 
         // Save meeting
         async function saveMeeting() {
+            console.log('Save meeting clicked');
+            
+            // Validation
+            const pembuatValue = document.getElementById('pembuatRapat').value;
+            const tempatValue = document.getElementById('tempatRapat').value.trim();
+            const keteranganValue = document.getElementById('keteranganRapat').value.trim();
+            const tanggalMulaiValue = document.getElementById('tanggalMulai').value;
+            const tanggalSelesaiValue = document.getElementById('tanggalSelesai').value;
+            const jamMulaiValue = document.getElementById('jamMulai').value;
+            const jamSelesaiValue = document.getElementById('jamSelesai').value;
+            
+            if (!pembuatValue) {
+                showToast('Peringatan', 'Pilih pembuat rapat!', 'warning');
+                return;
+            }
+            
+            if (!tempatValue) {
+                showToast('Peringatan', 'Isi lokasi meeting!', 'warning');
+                return;
+            }
+            
+            if (!keteranganValue) {
+                showToast('Peringatan', 'Isi keterangan meeting!', 'warning');
+                return;
+            }
+            
+            if (!tanggalMulaiValue || !tanggalSelesaiValue) {
+                showToast('Peringatan', 'Isi tanggal meeting!', 'warning');
+                return;
+            }
+            
+            if (!jamMulaiValue || !jamSelesaiValue) {
+                showToast('Peringatan', 'Isi waktu meeting!', 'warning');
+                return;
+            }
+            
             // Get selected audiences
             const selectedAudiences = [];
             document.querySelectorAll('#audienceCheckboxes input[type="checkbox"]:checked').forEach(cb => {
@@ -2942,12 +3007,6 @@ END:VCALENDAR`;
                 return;
             }
 
-            const pembuatValue = document.getElementById('pembuatRapat').value;
-            if (!pembuatValue) {
-                showToast('Peringatan', 'Pilih pembuat rapat!', 'warning');
-                return;
-            }
-
             const isExternal = pembuatValue === 'External';
 
             if (isExternal && !document.getElementById('externalCreator').value.trim()) {
@@ -2959,15 +3018,17 @@ END:VCALENDAR`;
                 pembuat: isExternal ? 'External' : pembuatValue,
                 isExternal: isExternal,
                 externalCreator: isExternal ? document.getElementById('externalCreator').value.trim() : null,
-                tempat: document.getElementById('tempatRapat').value.trim(),
+                tempat: tempatValue,
                 audience: selectedAudiences,
-                keterangan: document.getElementById('keteranganRapat').value.trim(),
-                tanggalMulai: document.getElementById('tanggalMulai').value,
-                tanggalSelesai: document.getElementById('tanggalSelesai').value,
-                jamMulai: document.getElementById('jamMulai').value,
-                jamSelesai: document.getElementById('jamSelesai').value,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                keterangan: keteranganValue,
+                tanggalMulai: tanggalMulaiValue,
+                tanggalSelesai: tanggalSelesaiValue,
+                jamMulai: jamMulaiValue,
+                jamSelesai: jamSelesaiValue,
+                updatedAt: new Date().toISOString()
             };
+
+            console.log('Meeting data to save:', meetingData);
 
             try {
                 document.getElementById('saveMeetingBtn').disabled = true;
@@ -2975,11 +3036,15 @@ END:VCALENDAR`;
 
                 if (isEditMode) {
                     const editingId = document.getElementById('editingId').value;
+                    console.log('Updating meeting:', editingId);
                     await db.collection('meetings').doc(editingId).update(meetingData);
+                    console.log('Meeting updated successfully');
                     showToast('Berhasil', 'Meeting berhasil diupdate!', 'success');
                 } else {
-                    meetingData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                    await db.collection('meetings').add(meetingData);
+                    meetingData.createdAt = new Date().toISOString();
+                    console.log('Adding new meeting...');
+                    const docRef = await db.collection('meetings').add(meetingData);
+                    console.log('Meeting added with ID:', docRef.id);
                     showToast('Berhasil', 'Meeting berhasil ditambahkan!', 'success');
                 }
                 
@@ -2987,7 +3052,8 @@ END:VCALENDAR`;
                 document.getElementById('meetingForm').reset();
             } catch (error) {
                 console.error('Error saving meeting:', error);
-                showToast('Error', 'Gagal menyimpan meeting: ' + error.message, 'error');
+                showToast('Error', 'Gagal menyimpan: ' + error.message, 'error');
+                alert('Error saving meeting: ' + error.message + '\n\nCheck console for details.');
             } finally {
                 document.getElementById('saveMeetingBtn').disabled = false;
                 document.getElementById('saveMeetingBtn').innerHTML = '<i class="fas fa-save"></i> Simpan Meeting';
