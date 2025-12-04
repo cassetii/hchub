@@ -401,6 +401,43 @@
             color: var(--accent);
         }
 
+        .meeting-organizer {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: linear-gradient(135deg, rgba(107, 63, 105, 0.1) 0%, rgba(163, 118, 162, 0.05) 100%);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--primary);
+        }
+
+        .meeting-organizer i {
+            color: var(--accent);
+        }
+
+        .meeting-organizer {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: linear-gradient(135deg, rgba(107, 63, 105, 0.1) 0%, rgba(163, 118, 162, 0.05) 100%);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--primary);
+        }
+
+        .meeting-organizer i {
+            color: var(--primary);
+            font-size: 0.85rem;
+        }
+
         .meeting-participants {
             margin-bottom: 1rem;
         }
@@ -2295,10 +2332,13 @@
             const moreParticipants = participants.length > 3 ? 
                 `<div class="participant-badge">+${participants.length - 3} lainnya</div>` : '';
 
+            // Get organizer name
+            const organizer = meeting.isExternal ? meeting.externalCreator : meeting.pembuat;
+
             return `
                 <div class="meeting-card" data-index="${index}" onclick="viewMeetingDetail('${meeting.id}')">
                     <div class="meeting-card-header">
-                        <div class="meeting-time">${meeting.jamMulai}</div>
+                        <div class="meeting-time">${meeting.jamMulai} - ${meeting.jamSelesai}</div>
                         <div class="meeting-date">
                             <i class="fas fa-calendar"></i>
                             ${formattedDate}
@@ -2306,6 +2346,10 @@
                     </div>
                     <div class="meeting-card-body">
                         <h3 class="meeting-title">${meeting.keterangan}</h3>
+                        <div class="meeting-organizer">
+                            <i class="fas fa-user-tie"></i>
+                            <span><strong>Inisiator:</strong> ${organizer || 'Tidak ada pembuat'}</span>
+                        </div>
                         <div class="meeting-location">
                             <i class="fas fa-map-marker-alt"></i>
                             ${meeting.tempat || 'Lokasi belum ditentukan'}
